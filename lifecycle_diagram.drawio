@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-04-06T00:00:00.000Z" agent="Antigravity" version="21.0.0">
+  <diagram name="Data Science Lifecycle" id="ds-lifecycle">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="1">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Title -->
+        <mxCell id="title" value="&lt;font style=&quot;font-size: 24px;&quot;&gt;&lt;b&gt;Customer Churn Prediction — Data Science Lifecycle&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="700" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Node 1: Problem Definition -->
+        <mxCell id="n1" value="&lt;b&gt;Step 1&lt;/b&gt;&lt;br&gt;Problem&lt;br&gt;Definition" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#e94560;fontColor=#ffffff;fontSize=13;arcSize=30;shadow=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="80" y="120" width="150" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Node 2: Data Collection -->
+        <mxCell id="n2" value="&lt;b&gt;Step 2&lt;/b&gt;&lt;br&gt;Data&lt;br&gt;Collection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#16213e;strokeColor=#0f3460;fontColor=#ffffff;fontSize=13;arcSize=30;shadow=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="310" y="120" width="150" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Node 3: Data Preprocessing -->
+        <mxCell id="n3" value="&lt;b&gt;Step 3&lt;/b&gt;&lt;br&gt;Data&lt;br&gt;Preprocessing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f3460;strokeColor=#533483;fontColor=#ffffff;fontSize=13;arcSize=30;shadow=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="540" y="120" width="150" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Node 4: EDA -->
+        <mxCell id="n4" value="&lt;b&gt;Step 4&lt;/b&gt;&lt;br&gt;Exploratory Data&lt;br&gt;Analysis (EDA)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#533483;strokeColor=#e94560;fontColor=#ffffff;fontSize=13;arcSize=30;shadow=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="770" y="120" width="150" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Node 5: Feature Engineering -->
+        <mxCell id="n5" value="&lt;b&gt;Step 5&lt;/b&gt;&lt;br&gt;Feature&lt;br&gt;Engineering" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e94560;strokeColor=#ff6b6b;fontColor=#ffffff;fontSize=13;arcSize=30;shadow=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="120" width="150" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Node 6: Model Building -->
+        <mxCell id="n6" value="&lt;b&gt;Step 6&lt;/b&gt;&lt;br&gt;Model&lt;br&gt;Building" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ff6b6b;strokeColor=#ffc93c;fontColor=#1a1a2e;fontSize=13;arcSize=30;shadow=1;strokeWidth=2;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="120" width="150" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Node 7: Model Evaluation -->
+        <mxCell id="n7" value="&lt;b&gt;Step 7&lt;/b&gt;&lt;br&gt;Model&lt;br&gt;Evaluation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffc93c;strokeColor=#ff9a00;fontColor=#1a1a2e;fontSize=13;arcSize=30;shadow=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="300" width="150" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Node 8: Deployment -->
+        <mxCell id="n8" value="&lt;b&gt;Step 8&lt;/b&gt;&lt;br&gt;Model&lt;br&gt;Deployment" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#00b4d8;strokeColor=#0077b6;fontColor=#ffffff;fontSize=13;arcSize=30;shadow=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="300" width="150" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Node 9: Monitoring & Maintenance -->
+        <mxCell id="n9" value="&lt;b&gt;Step 9&lt;/b&gt;&lt;br&gt;Monitoring &amp;&lt;br&gt;Maintenance" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#06d6a0;strokeColor=#028a5e;fontColor=#1a1a2e;fontSize=13;arcSize=30;shadow=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="770" y="300" width="150" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrows -->
+        <mxCell id="a1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#e94560;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;shadow=1;" edge="1" source="n1" target="n2" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#0f3460;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;shadow=1;" edge="1" source="n2" target="n3" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#533483;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;shadow=1;" edge="1" source="n3" target="n4" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#e94560;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;shadow=1;" edge="1" source="n4" target="n5" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#ff6b6b;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;shadow=1;" edge="1" source="n5" target="n6" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#ffc93c;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;shadow=1;" edge="1" source="n6" target="n7" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#ff9a00;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;shadow=1;" edge="1" source="n7" target="n8" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#0077b6;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;shadow=1;" edge="1" source="n8" target="n9" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Feedback Loop Arrow (Monitoring back to Problem Definition) -->
+        <mxCell id="a9" value="&lt;i&gt;Feedback Loop&lt;/i&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#06d6a0;strokeWidth=2;dashed=1;dashPattern=8 4;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;shadow=1;fontColor=#06d6a0;fontSize=11;" edge="1" source="n9" target="n1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="155" y="340"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Phase Labels -->
+        <mxCell id="p1" value="📋 PLANNING" style="text;html=1;align=center;verticalAlign=middle;resizable=0;fillColor=none;strokeColor=none;fontColor=#e94560;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="105" y="100" width="100" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="p2" value="📊 DATA PHASE" style="text;html=1;align=center;verticalAlign=middle;resizable=0;fillColor=none;strokeColor=none;fontColor=#0f3460;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="100" width="100" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="p3" value="🔧 PREPARATION" style="text;html=1;align=center;verticalAlign=middle;resizable=0;fillColor=none;strokeColor=none;fontColor=#533483;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="565" y="100" width="110" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="p4" value="🔍 ANALYSIS" style="text;html=1;align=center;verticalAlign=middle;resizable=0;fillColor=none;strokeColor=none;fontColor=#533483;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="100" width="100" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="p5" value="⚙️ ENGINEERING" style="text;html=1;align=center;verticalAlign=middle;resizable=0;fillColor=none;strokeColor=none;fontColor=#e94560;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1025" y="100" width="110" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="p6" value="🤖 MODELING" style="text;html=1;align=center;verticalAlign=middle;resizable=0;fillColor=none;strokeColor=none;fontColor=#ff6b6b;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="100" width="100" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="p7" value="📈 EVALUATION" style="text;html=1;align=center;verticalAlign=middle;resizable=0;fillColor=none;strokeColor=none;fontColor=#ffc93c;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1255" y="390" width="100" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="p8" value="🚀 DEPLOYMENT" style="text;html=1;align=center;verticalAlign=middle;resizable=0;fillColor=none;strokeColor=none;fontColor=#00b4d8;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1025" y="390" width="100" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="p9" value="🔄 MONITORING" style="text;html=1;align=center;verticalAlign=middle;resizable=0;fillColor=none;strokeColor=none;fontColor=#06d6a0;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="795" y="390" width="100" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- Legend Box -->
+        <mxCell id="legend" value="&lt;b&gt;Legend&lt;/b&gt;&lt;br&gt;━━━━━━━━━&lt;br&gt;🟣 Planning Phase&lt;br&gt;🔵 Data Phase&lt;br&gt;🟠 Modeling Phase&lt;br&gt;🟢 Operations Phase&lt;br&gt;- - → Feedback Loop" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#333;fontColor=#cccccc;fontSize=11;align=left;spacingLeft=10;shadow=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="80" y="430" width="180" height="160" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

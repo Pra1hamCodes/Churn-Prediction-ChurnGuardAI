@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered Customer Churn Prediction for Telecom - Predict customer churn probability with machine learning">
+    <title>ChurnGuard AI — Customer Churn Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a1a;
+            --bg-secondary: #111128;
+            --bg-card: #16163a;
+            --bg-card-hover: #1c1c4a;
+            --bg-input: #1a1a3e;
+            --border-color: #2a2a5a;
+            --border-focus: #6c63ff;
+            --text-primary: #f0f0ff;
+            --text-secondary: #a0a0c0;
+            --text-muted: #6a6a8a;
+            --accent-primary: #6c63ff;
+            --accent-secondary: #4ecdc4;
+            --accent-gradient: linear-gradient(135deg, #6c63ff, #4ecdc4);
+            --risk-low: #06d6a0;
+            --risk-medium: #ffc93c;
+            --risk-high: #e94560;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
+            --shadow-lg: 0 16px 64px rgba(0,0,0,0.5);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== BACKGROUND EFFECTS ===== */
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .bg-orb-1 {
+            width: 600px; height: 600px;
+            background: #6c63ff;
+            top: -200px; left: -100px;
+            animation-delay: 0s;
+        }
+
+        .bg-orb-2 {
+            width: 500px; height: 500px;
+            background: #4ecdc4;
+            bottom: -150px; right: -100px;
+            animation-delay: -7s;
+        }
+
+        .bg-orb-3 {
+            width: 400px; height: 400px;
+            background: #e94560;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            33% { transform: translateY(-30px) scale(1.05); }
+            66% { transform: translateY(20px) scale(0.95); }
+        }
+
+        /* ===== GRID OVERLAY ===== */
+        .grid-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(108,99,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(108,99,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== LAYOUT ===== */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            text-align: center;
+            padding: 40px 0 30px;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(108,99,255,0.15);
+            border: 1px solid rgba(108,99,255,0.3);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+        }
+
+        .header-badge .pulse {
+            width: 8px; height: 8px;
+            background: var(--accent-secondary);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ===== MAIN GRID ===== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        /* ===== CARD STYLES ===== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            backdrop-filter: blur(20px);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            border-color: rgba(108,99,255,0.3);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title .icon {
+            width: 36px; height: 36px;
+            background: var(--accent-gradient);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        /* ===== FORM ===== */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .form-group select,
+        .form-group input {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+        }
+
+        .form-group select option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        /* Slider */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slider-container input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border-color);
+            outline: none;
+            border: none;
+            padding: 0;
+        }
+
+        .slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            cursor: pointer;
+            border: 2px solid var(--bg-primary);
+            box-shadow: 0 0 8px rgba(108,99,255,0.4);
+        }
+
+        .slider-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-secondary);
+            min-width: 60px;
+            text-align: right;
+        }
+
+        /* ===== PREDICT BUTTON ===== */
+        .predict-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: var(--radius-md);
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        .predict-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(108,99,255,0.4);
+        }
+
+        .predict-btn:active {
+            transform: translateY(0);
+        }
+
+        .predict-btn.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .predict-btn .spinner {
+            display: none;
+            width: 20px; height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        .predict-btn.loading .btn-text { display: none; }
+        .predict-btn.loading .spinner { display: inline-block; }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== RESULT CARD ===== */
+        .result-section {
+            display: none;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .result-section.visible {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Gauge */
+        .gauge-container {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        .gauge-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .gauge-svg {
+            width: 200px;
+            height: 200px;
+            transform: rotate(-90deg);
+        }
+
+        .gauge-bg {
+            fill: none;
+            stroke: var(--border-color);
+            stroke-width: 12;
+        }
+
+        .gauge-fill {
+            fill: none;
+            stroke-width: 12;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1.5s ease-out, stroke 0.5s;
+        }
+
+        .gauge-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .gauge-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .gauge-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Risk Badge */
+        .risk-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px auto;
+        }
+
+        .risk-badge.low {
+            background: rgba(6,214,160,0.15);
+            color: var(--risk-low);
+            border: 1px solid rgba(6,214,160,0.3);
+        }
+
+        .risk-badge.medium {
+            background: rgba(255,201,60,0.15);
+            color: var(--risk-medium);
+            border: 1px solid rgba(255,201,60,0.3);
+        }
+
+        .risk-badge.high {
+            background: rgba(233,69,96,0.15);
+            color: var(--risk-high);
+            border: 1px solid rgba(233,69,96,0.3);
+        }
+
+        .risk-badge .dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .risk-badge.low .dot { background: var(--risk-low); }
+        .risk-badge.medium .dot { background: var(--risk-medium); }
+        .risk-badge.high .dot { background: var(--risk-high); }
+
+        /* Prediction Text */
+        .prediction-text {
+            text-align: center;
+            margin: 16px 0;
+        }
+
+        .prediction-text .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .prediction-text .value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        /* Factors */
+        .factors-section {
+            margin-top: 20px;
+        }
+
+        .factors-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .factor-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            border-left: 3px solid;
+            transition: var(--transition);
+        }
+
+        .factor-item:hover {
+            background: rgba(255,255,255,0.06);
+        }
+
+        .factor-item.high { border-left-color: var(--risk-high); }
+        .factor-item.medium { border-left-color: var(--risk-medium); }
+        .factor-item.low { border-left-color: var(--risk-low); }
+
+        .factor-icon {
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .factor-content h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .factor-content p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Recommendation */
+        .recommendation-box {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(108,99,255,0.08);
+            border: 1px solid rgba(108,99,255,0.2);
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .recommendation-box .rec-title {
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== ERROR ===== */
+        .error-box {
+            display: none;
+            padding: 14px;
+            background: rgba(233,69,96,0.1);
+            border: 1px solid rgba(233,69,96,0.3);
+            border-radius: var(--radius-sm);
+            color: var(--risk-high);
+            font-size: 0.9rem;
+            margin-top: 12px;
+        }
+
+        .error-box.visible { display: block; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .footer a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 12px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .gauge-wrapper {
+                width: 160px;
+                height: 160px;
+            }
+
+            .gauge-svg {
+                width: 160px;
+                height: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Effects -->
+    <div class="bg-effects">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+    </div>
+    <div class="grid-overlay"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-badge">
+                <span class="pulse"></span>
+                AI-Powered Prediction Engine
+            </div>
+            <h1>ChurnGuard AI</h1>
+            <p>Predict telecom customer churn with machine learning. Enter customer details below to assess retention risk in real-time.</p>
+        </header>
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Left: Form -->
+            <div class="card" id="form-card">
+                <div class="card-title">
+                    <div class="icon">📋</div>
+                    Customer Profile
+                </div>
+
+                <form id="churn-form">
+                    <div class="form-grid">
+                        <!-- Demographics -->
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender">
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="SeniorCitizen">Senior Citizen</label>
+                            <select id="SeniorCitizen" name="SeniorCitizen">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Partner">Partner</label>
+                            <select id="Partner" name="Partner">
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Dependents">Dependents</label>
+                            <select id="Dependents" name="Dependents">
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <!-- Tenure Slider -->
+                        <div class="form-group full-width">
+                            <label for="tenure">Tenure (Months)</label>
+                            <div class="slider-container">
+                                <input type="range" id="tenure" name="tenure" min="0" max="72" value="12" oninput="updateSliderValue('tenure', 'tenure-val', ' mo')">
+                                <span class="slider-value" id="tenure-val">12 mo</span>
+                            </div>
+                        </div>
+
+                        <!-- Phone & Internet -->
+                        <div class="form-group">
+                            <label for="PhoneService">Phone Service</label>
+                            <select id="PhoneService" name="PhoneService">
+                                <option value="No">No</option>
+                                <option value="Yes" selected>Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="MultipleLines">Multiple Lines</label>
+                            <select id="MultipleLines" name="MultipleLines">
+                                <option value="No">No</option>
+                                <option value="No phone service">No Phone Service</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="InternetService">Internet Service</label>
+                            <select id="InternetService" name="InternetService">
+                                <option value="DSL">DSL</option>
+                                <option value="Fiber optic" selected>Fiber Optic</option>
+                                <option value="No">No Internet</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="OnlineSecurity">Online Security</label>
+                            <select id="OnlineSecurity" name="OnlineSecurity">
+                                <option value="No" selected>No</option>
+                                <option value="No internet service">No Internet Service</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="OnlineBackup">Online Backup</label>
+                            <select id="OnlineBackup" name="OnlineBackup">
+                                <option value="No" selected>No</option>
+                                <option value="No internet service">No Internet Service</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="DeviceProtection">Device Protection</label>
+                            <select id="DeviceProtection" name="DeviceProtection">
+                                <option value="No" selected>No</option>
+                                <option value="No internet service">No Internet Service</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="TechSupport">Tech Support</label>
+                            <select id="TechSupport" name="TechSupport">
+                                <option value="No" selected>No</option>
+                                <option value="No internet service">No Internet Service</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="StreamingTV">Streaming TV</label>
+                            <select id="StreamingTV" name="StreamingTV">
+                                <option value="No">No</option>
+                                <option value="No internet service">No Internet Service</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="StreamingMovies">Streaming Movies</label>
+                            <select id="StreamingMovies" name="StreamingMovies">
+                                <option value="No">No</option>
+                                <option value="No internet service">No Internet Service</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <!-- Contract & Billing -->
+                        <div class="form-group">
+                            <label for="Contract">Contract</label>
+                            <select id="Contract" name="Contract">
+                                <option value="Month-to-month" selected>Month-to-month</option>
+                                <option value="One year">One Year</option>
+                                <option value="Two year">Two Year</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="PaperlessBilling">Paperless Billing</label>
+                            <select id="PaperlessBilling" name="PaperlessBilling">
+                                <option value="No">No</option>
+                                <option value="Yes" selected>Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="PaymentMethod">Payment Method</label>
+                            <select id="PaymentMethod" name="PaymentMethod">
+                                <option value="Electronic check" selected>Electronic Check</option>
+                                <option value="Mailed check">Mailed Check</option>
+                                <option value="Bank transfer (automatic)">Bank Transfer (Auto)</option>
+                                <option value="Credit card (automatic)">Credit Card (Auto)</option>
+                            </select>
+                        </div>
+
+                        <!-- Charges Sliders -->
+                        <div class="form-group full-width">
+                            <label for="MonthlyCharges">Monthly Charges ($)</label>
+                            <div class="slider-container">
+                                <input type="range" id="MonthlyCharges" name="MonthlyCharges" min="18" max="120" value="70" step="0.5" oninput="updateSliderValue('MonthlyCharges', 'monthly-val', '', '$')">
+                                <span class="slider-value" id="monthly-val">$70</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="TotalCharges">Total Charges ($)</label>
+                            <div class="slider-container">
+                                <input type="range" id="TotalCharges" name="TotalCharges" min="18" max="9000" value="840" step="10" oninput="updateSliderValue('TotalCharges', 'total-val', '', '$')">
+                                <span class="slider-value" id="total-val">$840</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="predict-btn" id="predict-btn">
+                        <span class="btn-text">🔮 Predict Churn Risk</span>
+                        <span class="spinner"></span>
+                    </button>
+
+                    <div class="error-box" id="error-box"></div>
+                </form>
+            </div>
+
+            <!-- Right: Results -->
+            <div>
+                <!-- Default State -->
+                <div class="card" id="empty-state" style="text-align:center; padding:60px 28px;">
+                    <div style="font-size:4rem; margin-bottom:16px; opacity:0.3;">🔮</div>
+                    <h3 style="font-size:1.1rem; color:var(--text-secondary); font-weight:600;">Awaiting Prediction</h3>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-top:8px;">Fill in the customer details and click<br>"Predict Churn Risk" to see results</p>
+                </div>
+
+                <!-- Result Card -->
+                <div class="card result-section" id="result-card">
+                    <div class="card-title">
+                        <div class="icon">🎯</div>
+                        Prediction Results
+                    </div>
+
+                    <!-- Gauge -->
+                    <div class="gauge-container">
+                        <div class="gauge-wrapper">
+                            <svg class="gauge-svg" viewBox="0 0 200 200">
+                                <circle class="gauge-bg" cx="100" cy="100" r="85"></circle>
+                                <circle class="gauge-fill" id="gauge-fill" cx="100" cy="100" r="85"
+                                    stroke-dasharray="534.07" stroke-dashoffset="534.07"></circle>
+                            </svg>
+                            <div class="gauge-center">
+                                <div class="gauge-value" id="gauge-value">0%</div>
+                                <div class="gauge-label">Churn Prob</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Risk Badge + Prediction -->
+                    <div style="text-align:center;">
+                        <div class="risk-badge" id="risk-badge">
+                            <span class="dot"></span>
+                            <span id="risk-text">Low Risk</span>
+                        </div>
+                        <div class="prediction-text">
+                            <div class="label">Will this customer churn?</div>
+                            <div class="value" id="prediction-value">No</div>
+                        </div>
+                    </div>
+
+                    <!-- Factors -->
+                    <div class="factors-section">
+                        <div class="factors-title">📊 Top Risk Factors</div>
+                        <div id="factors-container"></div>
+                    </div>
+
+                    <!-- Recommendation -->
+                    <div class="recommendation-box">
+                        <div class="rec-title">💡 Recommendation</div>
+                        <div id="recommendation-text"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>ChurnGuard AI &mdash; Customer Churn Prediction System &bull; Data Science Lab Experiment</p>
+        </footer>
+    </div>
+
+    <script>
+        // ===== SLIDER VALUE UPDATES =====
+        function updateSliderValue(inputId, displayId, suffix = '', prefix = '') {
+            const val = document.getElementById(inputId).value;
+            document.getElementById(displayId).textContent = prefix + val + suffix;
+        }
+
+        // ===== FORM SUBMISSION =====
+        const form = document.getElementById('churn-form');
+        const btn = document.getElementById('predict-btn');
+        const errorBox = document.getElementById('error-box');
+        const emptyState = document.getElementById('empty-state');
+        const resultCard = document.getElementById('result-card');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Loading state
+            btn.classList.add('loading');
+            errorBox.classList.remove('visible');
+
+            // Collect form data
+            const formData = {
+                gender: document.getElementById('gender').value,
+                SeniorCitizen: parseInt(document.getElementById('SeniorCitizen').value),
+                Partner: document.getElementById('Partner').value,
+                Dependents: document.getElementById('Dependents').value,
+                tenure: parseInt(document.getElementById('tenure').value),
+                PhoneService: document.getElementById('PhoneService').value,
+                MultipleLines: document.getElementById('MultipleLines').value,
+                InternetService: document.getElementById('InternetService').value,
+                OnlineSecurity: document.getElementById('OnlineSecurity').value,
+                OnlineBackup: document.getElementById('OnlineBackup').value,
+                DeviceProtection: document.getElementById('DeviceProtection').value,
+                TechSupport: document.getElementById('TechSupport').value,
+                StreamingTV: document.getElementById('StreamingTV').value,
+                StreamingMovies: document.getElementById('StreamingMovies').value,
+                Contract: document.getElementById('Contract').value,
+                PaperlessBilling: document.getElementById('PaperlessBilling').value,
+                PaymentMethod: document.getElementById('PaymentMethod').value,
+                MonthlyCharges: parseFloat(document.getElementById('MonthlyCharges').value),
+                TotalCharges: parseFloat(document.getElementById('TotalCharges').value)
+            };
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+
+                displayResult(result);
+            } catch (err) {
+                errorBox.textContent = '⚠️ ' + (err.message || 'Prediction failed. Is the server running?');
+                errorBox.classList.add('visible');
+            } finally {
+                btn.classList.remove('loading');
+            }
+        });
+
+        // ===== DISPLAY RESULT =====
+        function displayResult(result) {
+            emptyState.style.display = 'none';
+            resultCard.classList.add('visible');
+
+            const prob = result.churn_probability;
+            const percent = Math.round(prob * 100);
+
+            // Update gauge
+            const circumference = 2 * Math.PI * 85; // ~534.07
+            const offset = circumference - (prob * circumference);
+            const gaugeFill = document.getElementById('gauge-fill');
+            
+            let gaugeColor;
+            if (prob < 0.3) gaugeColor = '#06d6a0';
+            else if (prob < 0.6) gaugeColor = '#ffc93c';
+            else gaugeColor = '#e94560';
+            
+            gaugeFill.style.stroke = gaugeColor;
+            // Trigger animation
+            setTimeout(() => {
+                gaugeFill.style.strokeDashoffset = offset;
+            }, 100);
+
+            // Animate percentage
+            animateValue('gauge-value', 0, percent, 1200);
+
+            // Risk badge
+            const badge = document.getElementById('risk-badge');
+            badge.className = 'risk-badge ' + result.risk_level.toLowerCase();
+            document.getElementById('risk-text').textContent = result.risk_level + ' Risk';
+
+            // Prediction
+            const predVal = document.getElementById('prediction-value');
+            predVal.textContent = result.prediction === 'Yes' ? '⚠️ Yes — Likely to Churn' : '✅ No — Likely to Stay';
+            predVal.style.color = result.prediction === 'Yes' ? '#e94560' : '#06d6a0';
+
+            // Factors
+            const factorsContainer = document.getElementById('factors-container');
+            factorsContainer.innerHTML = '';
+            result.factors.forEach(f => {
+                const impactClass = f.impact.toLowerCase();
+                const icon = f.impact === 'High' ? '🔴' : (f.impact === 'Medium' ? '🟡' : '🟢');
+                factorsContainer.innerHTML += `
+                    <div class="factor-item ${impactClass}">
+                        <span class="factor-icon">${icon}</span>
+                        <div class="factor-content">
+                            <h4>${f.factor}</h4>
+                            <p>${f.description}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Recommendation
+            document.getElementById('recommendation-text').textContent = result.recommendation;
+
+            // Scroll to results on mobile
+            if (window.innerWidth <= 768) {
+                resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // ===== ANIMATE NUMBER =====
+        function animateValue(elementId, start, end, duration) {
+            const element = document.getElementById(elementId);
+            const range = end - start;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+                const current = Math.round(start + range * eased);
+                element.textContent = current + '%';
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+
+            requestAnimationFrame(update);
+        }
+    </script>
+</body>
+</html>
