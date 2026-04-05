@@ -2,7 +2,7 @@
 
 > An end-to-end Data Science project implementing the complete ML lifecycle — from data collection to deployment — for predicting customer churn in the telecommunications industry.
 
----
+deployed link https://churn-prediction-churnguardai.onrender.com
 
 ## 📋 Project Overview
 
