@@ -298,10 +298,12 @@ def health():
 # ============================================================================
 # MAIN
 # ============================================================================
+load_artifacts()
+
 if __name__ == '__main__':
-    load_artifacts()
     print("\n" + "=" * 50)
     print("  Customer Churn Prediction Web App")
     print("  Open: http://localhost:5000")
     print("=" * 50 + "\n")
     app.run(debug=True, host='0.0.0.0', port=5000)
+
